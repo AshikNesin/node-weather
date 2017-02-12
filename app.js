@@ -13,17 +13,12 @@ const argv = yargs
     .help()
     .argv;
 const { address } = argv
-const onGetAddressSuccess = (res) => {
-    const { latitute, longitude } = res;
-    console.log(res);
-    weather.getWeather(latitute, longitude).then((res) => {
-        console.log(res);
-    })
-}
 
 const onGetAddressFailure = (res) => {
     console.log(res);
 }
-
 geocode.getGeoAddress(address)
-    .then(onGetAddressSuccess, onGetAddressFailure)
+    .then((addressResponse)=>addressResponse, onGetAddressFailure)
+    .then(({latitute, longitude})=>{
+    	weather.getWeather(latitute, longitude).then((res)=>console.log(res))
+    })
